@@ -1,0 +1,35 @@
+﻿@model  string
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <canvas id="canvas" width="1024" height="1024"></canvas>
+    <script type="text/javascript">
+        var vertices, triangles,i;
+        traslateData();
+         //转化从后台来的数据为前端可使用的数据
+        function traslateData() {
+
+            var data ="@Model";
+            var reg = new RegExp("&quot;", "g"); //创建正则RegExp对象
+            var json = JSON.parse(data.replace(reg, '"'));
+            vertices = json.vertices;
+            triangles = json.triangles;
+        }
+
+        var canvas = document.getElementById("canvas"),
+            ctx = canvas.getContext("2d");
+   
+
+        for ( i = triangles.length; i; ) {
+        ctx.beginPath();
+        --i; ctx.moveTo(vertices[triangles[i]].X, vertices[triangles[i]].Y);
+        --i; ctx.lineTo(vertices[triangles[i]].X, vertices[triangles[i]].Y);
+        --i; ctx.lineTo(vertices[triangles[i]].X, vertices[triangles[i]].Y);
+        ctx.closePath();
+        ctx.stroke();
+      }
+    </script>
+</body>
+</html>
